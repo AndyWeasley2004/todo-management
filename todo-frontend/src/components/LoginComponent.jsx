@@ -9,10 +9,13 @@ function LoginComponent() {
 
     const navigate = useNavigate();
 
-    async function handleLoginForm(e) {
+    function handleLoginForm(e) {
         e.preventDefault();
 
-        await loginAPICall(username, password).then((response) => {
+        console.log(username);
+        console.log(password);
+
+        loginAPICall(username, password).then((response) => {
             console.log(response.data);
 
             const token = 'Basic ' + window.btoa(username + ":" + password);
@@ -70,7 +73,9 @@ function LoginComponent() {
                                 </div>
 
                                 <div className='form-group mb-3'>
-                                    <button className='btn btn-primary' onClick={(e) => handleLoginForm(e)}>Submit
+                                    <button className='btn btn-primary'
+                                            onClick={(e) =>
+                                                handleLoginForm(e)}>Submit
                                     </button>
 
                                 </div>

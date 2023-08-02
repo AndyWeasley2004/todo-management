@@ -1,5 +1,6 @@
 package com.hogwarts.todo.controller;
 
+import com.hogwarts.todo.dto.JwtAuthResponse;
 import com.hogwarts.todo.dto.LoginDto;
 import com.hogwarts.todo.dto.RegisterDto;
 import com.hogwarts.todo.service.AuthService;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private AuthService authService;
+
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
@@ -23,10 +25,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        String response = authService.login(loginDto);
+    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto) {
+        String token = authService.login(loginDto);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
+
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
 
 

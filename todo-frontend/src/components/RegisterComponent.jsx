@@ -10,7 +10,7 @@ function RegisterComponent() {
 
     function handleRegistrationForm(e){
         e.preventDefault();
-        const register = {name, username, email, password};
+        const register = { name, username, email, password };
         console.log(register);
 
         registerAPICall(register).then((response) => {

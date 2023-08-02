@@ -7,6 +7,7 @@ import com.hogwarts.todo.entity.User;
 import com.hogwarts.todo.exception.TodoAPIException;
 import com.hogwarts.todo.repository.RoleRepository;
 import com.hogwarts.todo.repository.UserRepository;
+import com.hogwarts.todo.security.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +28,7 @@ public class AuthServiceImpl implements AuthService {
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public String register(RegisterDto registerDto) {
@@ -64,6 +66,9 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User Log In Successfully";
+        String token = jwtTokenProvider.generateToken(authentication);
+
+
+        return token;
     }
 }

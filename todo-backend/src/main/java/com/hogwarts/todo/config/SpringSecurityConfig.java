@@ -1,5 +1,7 @@
 package com.hogwarts.todo.config;
 
+import com.hogwarts.todo.security.JwtAuthenticationEntryPoint;
+import com.hogwarts.todo.security.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableMethodSecurity
 @Configuration
@@ -24,6 +27,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SpringSecurityConfig {
 
     private UserDetailsService userDetailsService;
+
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+
+    private JwtAuthenticationFilter authenticationFilter;
 
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -38,7 +45,13 @@ public class SpringSecurityConfig {
                     authorize.requestMatchers("/api/auth/**").permitAll();
                     authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     authorize.anyRequest().authenticated();
-             }).httpBasic(Customizer.withDefaults());
+                }).httpBasic(Customizer.withDefaults());
+
+
+        http.exceptionHandling(exception -> exception
+                .authenticationEntryPoint(authenticationEntryPoint));
+
+        http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -48,20 +61,4 @@ public class SpringSecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//        UserDetails andy = User.builder()
-//                .username("Andy")
-//                .password(passwordEncoder().encode("password"))
-//                .roles("USER")
-//                .build();
-//
-//        UserDetails aviva = User.builder()
-//                .username("Aviva")
-//                .password(passwordEncoder().encode("0109sin"))
-//                .roles("ADMIN")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(andy,aviva);
-//    }
 }

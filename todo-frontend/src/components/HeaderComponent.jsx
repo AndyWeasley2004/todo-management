@@ -21,7 +21,7 @@ const HeaderComponent = () => {
             <header>
                 <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
                     <div>
-                        <a href='http://localhost:3000' className='navbar-brand' style={{marginLeft: "10px"}}>Todo
+                        <a href='http://localhost:3000/todos' className='navbar-brand' style={{marginLeft: "10px"}}>Todo
                             Management System</a>
                     </div>
                     <div className="collapse navbar-collapse">
