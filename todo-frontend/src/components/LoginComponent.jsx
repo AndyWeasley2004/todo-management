@@ -12,17 +12,16 @@ function LoginComponent() {
     function handleLoginForm(e) {
         e.preventDefault();
 
-        console.log(username);
-        console.log(password);
-
         loginAPICall(username, password).then((response) => {
             console.log(response.data);
 
             // const token = 'Basic ' + window.btoa(username + ":" + password);
             const token = 'Bearer ' + response.data.accessToken;
+            const role = response.data.role;
+
             storeToken(token);
 
-            saveLoggedInUser(username);
+            saveLoggedInUser(username, role);
             navigate("/todos")
 
             window.location.reload(false);
